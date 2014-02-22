@@ -19,21 +19,20 @@
         $download_dir = '/Users/Shared';
 
 	
-	echo "<pre>";//view formatted debug output
+	//echo "<pre>";//view formatted debug output
 	
 	$pco = new PlanningCenterOnline($settings);
 	
 	/**
 	 * BEGIN: Login
 	 */
-	$callbackUrl = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}"; //e.g. url to this page on return from auth
+	//$callbackUrl = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}"; //e.g. url to this page on return from auth
+        $callbackUrl = ""; //not needed for command line execution.
         $r = $pco->login($callbackUrl,PlanningCenterOnline::TOKEN_CACHE_FILE);//saves access token to file
-	
 	
 	if(!$r){
 		die("Login Failed");
 	}
-	
 	
 	#Query for Organization
 	$o = $pco->organization;
@@ -43,7 +42,6 @@
         $dcservice = $o->service_type_folders[$SITE_FOLDER]->service_types[0];
         echo "DC Service: {$dcservice->id}\n";          
 
-	
 //	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
         
@@ -58,7 +56,7 @@
         $save_attachments = null;
         $n = 0;
         foreach($plan->items as $item){
-            echo "  Item: $item->title\n";
+            //echo "  Item: $item->title\n";
             //start saving attachments after the 'Service' title.
             if ($item->title == "PW Set") {
                 $save_attachments = TRUE;
@@ -77,16 +75,18 @@
                         //write to file...
                         //Other things I should check for: 
                         //$attachment->downloadable = true, 
-                        $new_file_name = "$download_dir/test{$n}.jpg";
+                        $new_file_name = "$download_dir/$n. $attachment->filename";
                         $url = $attachment->url;
-                        echo "      Saving from URL: $url\n";                        
+                        //echo "      Saving from URL: $url\n";                        
                         $r = $pco->getAttachment($url,NULL,OAUTH_HTTP_METHOD_GET,$attachment->content_type);
                         //download to $download_dir
-                        if ( copy($r['redirect_url'],$new_file_name) == FALSE) {
-                            echo "Failed to Download: $attachment-filename\n";
+                        try {
+                            copy($r['redirect_url'],$new_file_name);
                         }
-                        
-                        
+                        catch (Exception $e) {
+                            echo "Failed to Download: {$attachment->filename}, {$e->getMessage}\n";
+                            return; 
+                        }   
                         
                     }      
                 }
