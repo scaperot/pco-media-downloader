@@ -1,2 +1,4 @@
 !tokens/.htaccess
 tokens/*
+nbproject/*
+src/com.capcitychurch/*

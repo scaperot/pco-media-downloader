@@ -2,10 +2,10 @@
 
 
 	/*
-	 * PlanningCenterOnline Helper Class Examples.
-	 * @license Non-Commercial Creative Commons, http://creativecommons.org/licenses/by-nc/2.0/, code is distributed "as is", use at own risk, all rights reserved
-	 * @copyright 2012 Daniel Boorn
-	 * @author Daniel Boorn daniel.boorn@gmail.com - Available for hire. Email for more info.
+	 * Media Setup Assistant 
+	 * @license ?
+	 * @copyright 2014 ?
+	 * @author David S. scaperot@vt.edu 
 	 * @requiresPHP PECL OAuth, http://php.net/oauth
 	 */
 
@@ -19,15 +19,9 @@
 	//var_dump($_SESSION);
 	//die('clear session for debug');
 
-	require('../src/com.rapiddigitalllc/PlanningCenterOnline.php');
+	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
+	require('src/com.capcitychurch/settings.php');
 	
-	
-	//contact PCO via email to request consumer key/secret for API
-	$settings = array(
-		'key'=>'YOUR KEY HERE',
-		'secret'=>'YOUR KEY HERE',
-		'debug'=>true,
-	);
 	
 	echo "<pre>";//view formatted debug output
 	
