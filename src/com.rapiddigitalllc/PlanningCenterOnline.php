@@ -28,7 +28,7 @@ class PlanningCenterOnline {
      * @var array
      */
     public $paths = array(
-        'tokenCache'   => '../tokens/', //file path to local folder
+        'tokenCache'   => 'tokens/', //file path to local folder
         'baseUrl'      => 'https://www.planningcenteronline.com',
         'general'      => array(
             'requestToken' => '/oauth/request_token',
@@ -381,7 +381,7 @@ class PlanningCenterOnline {
                 'Content-Type' => $contentType,
             );
             $r = $o->fetch($url, $data, $method, $headers);
-            var_dump($r);
+            //var_dump($r);
             $rspinfo = $o->getLastResponseInfo();
             return $rspinfo;
         } catch (OAuthException $e) {
