@@ -10,6 +10,8 @@
 	 */
 
     $download_dir = '';
+    $black_slide  = 'https://planningcenteronline.com/attachments/23267938';
+    
     if ($argc==2 && in_array($argv[1], array('--help', '-help', '-h'))) {    
 ?>
       Capcitychurch.com Media Setup Assistant.
