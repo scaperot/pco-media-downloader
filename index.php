@@ -1,4 +1,4 @@
-;l  <?php
+<?php
 
 
 	/*
@@ -9,6 +9,32 @@
 	 * @requiresPHP PECL OAuth, http://php.net/oauth
 	 */
 
+    $download_dir = '';
+    if ($argc==2 && in_array($argv[1], array('--help', '-help', '-h'))) {    
+?>
+      Capcitychurch.com Media Setup Assistant.
+
+      Usage:
+      <?php echo $argv[0]; ?> <option> <value>
+
+      Options:    
+      --help, -help, -h  - prints this message.
+      --destination  - sets the destination path
+            to download attachments from PCO.
+            
+      
+<?php
+          return;
+      } 
+      //if the number of args is two (i.e. key value
+      elseif ($argc == 3 && in_array($argv[1], array('--destination','-d'))) {
+          $download_dir = $argv[2];
+      }
+      else {
+          $download_dir = '/Users/Shared';
+      }
+      
+
 	ini_set('display_errors','1');
 
 	//session_start();
@@ -16,7 +42,6 @@
 	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
 	require('src/com.capcitychurch/settings.php');
 	
-        $download_dir = '/Users/Shared';
 
 	
 	//echo "<pre>";//view formatted debug output
@@ -71,7 +96,7 @@
                     //may add other types someday...
                     if (strpos($attachment->content_type,"image") !== FALSE) {
                         $n = $n + 1;
-                        echo "      Saving: $attachment->filename ($attachment->content_type)\n";
+                        echo "      Saving: $download_dir/$attachment->filename ($attachment->content_type)\n";
                         //write to file...
                         //Other things I should check for: 
                         //$attachment->downloadable = true, 
