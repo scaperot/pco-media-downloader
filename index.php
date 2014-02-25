@@ -9,10 +9,31 @@
 	 * @requiresPHP PECL OAuth, http://php.net/oauth
 	 */
 
-    $download_dir = '';
-    $black_slide  = 'https://planningcenteronline.com/attachments/23267938';
+
+	ini_set('display_errors','1');
+
+	//session_start();
+
+	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
+	require('src/com.capcitychurch/settings.php');
+        require('src/com.capcitychurch/options.php');
+
     
-    if ($argc==2 && in_array($argv[1], array('--help', '-help', '-h'))) {    
+    $DC_SITE = 0;
+    $KT_SITE = 1;
+    $CAPCITY_SUNDAY_SERVICE = 0;
+    $CAPCITY_KIDS = 1;
+    
+    $SERVICETYPE = $CAPCITY_SUNDAY_SERVICE; //$CAPCITY_KIDS = 1;
+    $SITE = $DC_SITE; //default
+    $DOWNLOAD_DIR = '/Users/Shared'; //default
+    $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
+    
+    $opts = getoptions('hd:s:', array('help', 'destination:', 'site:'));
+    var_dump($opts);
+    
+    foreach ($opts as $opt=>$value) {
+        if (in_array($opt,array('help', 'h'))) {
 ?>
       Capcitychurch.com Media Setup Assistant.
 
@@ -21,30 +42,41 @@
 
       Options:    
       --help, -help, -h  - prints this message.
+      --site - sets the site.  Valid values are: 'DC' or 'KT'.  Default is 'DC'
+      --destination  - sets the destination path
+            to download attachments from PCO.
+      
+<?php
+        }  
+        elseif (in_array($opt,array('site', 's'))) {
+            if ($value == 'DC' || $value == 'dc' ){
+                $SITE=0;     
+            }
+            elseif ($value == 'KT' || $value == 'kt') {
+                $SITE=1;
+            }
+            else {
+?>
+      Capcitychurch.com Media Setup Assistant.
+
+      Usage:
+      <?php echo $argv[0]; ?> <option> <value>
+
+      Options:    
+      --help, -help, -h  - prints this message.
+      --site - sets the site.  Valid values are: 'DC' or 'KT'
       --destination  - sets the destination path
             to download attachments from PCO.
             
       
-<?php
-          return;
-      } 
-      //if the number of args is two (i.e. key value
-      elseif ($argc == 3 && in_array($argv[1], array('--destination','-d'))) {
-          $download_dir = $argv[2];
-      }
-      else {
-          $download_dir = '/Users/Shared';
-      }
-      
-
-	ini_set('display_errors','1');
-
-	//session_start();
-
-	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
-	require('src/com.capcitychurch/settings.php');
-	
-
+<?php                
+                return;
+            }
+        }
+        elseif (in_array($opt,array('destination', 'd'))) {
+            $DOWNLOAD_DIR = $value;
+        }     
+    }
 	
 	//echo "<pre>";//view formatted debug output
 	
@@ -65,8 +97,7 @@
 	$o = $pco->organization;
         
         //Find the most recent Service for site
-        $SITE_FOLDER=0; //DC is 0, KT is 1;
-        $dcservice = $o->service_type_folders[$SITE_FOLDER]->service_types[0];
+        $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
         echo "DC Service: {$dcservice->id}\n";          
 
 //	//get all plans by service id
@@ -98,11 +129,11 @@
                     //may add other types someday...
                     if (strpos($attachment->content_type,"image") !== FALSE) {
                         $n = $n + 1;
-                        echo "      Saving: $download_dir/$attachment->filename ($attachment->content_type)\n";
+                        echo "      Saving: $DOWNLOAD_DIR/$attachment->filename ($attachment->content_type)\n";
                         //write to file...
                         //Other things I should check for: 
                         //$attachment->downloadable = true, 
-                        $new_file_name = "$download_dir/$n. $attachment->filename";
+                        $new_file_name = "$DOWNLOAD_DIR/$n. $attachment->filename";
                         $url = $attachment->url;
                         //echo "      Saving from URL: $url\n";                        
                         $r = $pco->getAttachment($url,NULL,OAUTH_HTTP_METHOD_GET,$attachment->content_type);
