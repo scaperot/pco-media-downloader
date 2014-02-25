@@ -7,7 +7,7 @@
  */
 //contact PCO via email to request consumer key/secret for API
 	$settings = array(
-		'key'=>'',
-        	'secret'=>'',
+		'key'=>'PUT YOUR KEYS HERE',
+        	'secret'=>'PUT YOUR KEYS HERE',
                 'debug'=>true,
 	);
