@@ -26,11 +26,11 @@
     
     $SERVICETYPE = $CAPCITY_SUNDAY_SERVICE; //$CAPCITY_KIDS = 1;
     $SITE = $DC_SITE; //default
+    $SITE_STR = 'DC';
     $DOWNLOAD_DIR = '/Users/Shared'; //default
     $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
     
     $opts = getoptions('hd:s:', array('help', 'destination:', 'site:'));
-    var_dump($opts);
     
     foreach ($opts as $opt=>$value) {
         if (in_array($opt,array('help', 'h'))) {
@@ -50,10 +50,12 @@
         }  
         elseif (in_array($opt,array('site', 's'))) {
             if ($value == 'DC' || $value == 'dc' ){
-                $SITE=0;     
+                $SITE=0; 
+                $SITE_STR = 'DC';
             }
             elseif ($value == 'KT' || $value == 'kt') {
                 $SITE=1;
+                $SITE_STR = 'KT';
             }
             else {
 ?>
@@ -98,7 +100,7 @@
         
         //Find the most recent Service for site
         $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
-        echo "DC Service: {$dcservice->id}\n";          
+        echo "$SITE_STR Service: {$dcservice->id}\n";          
 
 //	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
