@@ -85,8 +85,14 @@ class PlanningCenterOnline {
      * @param $serviceId
      * @return mixed
      */
-    public function getPlansByServiceId($serviceId) {
-        $url = $this->paths['baseUrl'] . sprintf($this->paths['plans']['serviceTypes'], $serviceId);
+    public function getPlansByServiceId($serviceId,$all_plans=FALSE) {
+        if ($all_plans == TRUE) {
+            $url = $this->paths['baseUrl'] . sprintf($this->paths['plans']['serviceTypes'], $serviceId) . '?all=true';    
+        }
+        else {
+            $url = $this->paths['baseUrl'] . sprintf($this->paths['plans']['serviceTypes'], $serviceId);
+        }
+        
         return $this->fetch($url);
     }
 

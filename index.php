@@ -72,7 +72,7 @@
 //	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
         
-        //Item 0 is the most recent plan...
+        //Item 0 of $plans is the most recent plan...
         echo "Fetching Site's Most Recent Plan: {$plans[0]->id} - {$plans[0]->dates}\n";
         $plan = $pco->getPlanById($plans[0]->id);
 
