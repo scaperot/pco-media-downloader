@@ -11,12 +11,7 @@ To get started open settings.php and add your keys to the file:
 Run the program from the command line from the base directory:
 
       Usage:
-      php index.php [option] [value]
+      php index.php 
 
-      Options:    
-      --help, -help, -h  - prints this message.
-      --site - sets the site.  Valid values are: 'DC' or 'KT'.  Default is 'DC'
-      --destination  - sets the destination path
-            to download attachments from PCO.
   
 
