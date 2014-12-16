@@ -12,73 +12,24 @@
 
 	ini_set('display_errors','1');
 
-	//session_start();
+	session_start();
 
 	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
 	require('src/com.capcitychurch/settings.php');
         require('src/com.capcitychurch/options.php');
 
     
-    $DC_SITE = 0;
-    $KT_SITE = 1;
+    $DC_SITE = 1;
+    $KT_SITE = 2;
     $CAPCITY_SUNDAY_SERVICE = 0;
     $CAPCITY_KIDS = 1;
     
     $SERVICETYPE = $CAPCITY_SUNDAY_SERVICE; //$CAPCITY_KIDS = 1;
     $SITE = $DC_SITE; //default
     $SITE_STR = 'DC';
-    $DOWNLOAD_DIR = '/Users/Shared'; //default
+    $DOWNLOAD_DIR = '/var/tmp'; //default
     $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
     
-    $opts = getoptions('hd:s:', array('help', 'destination:', 'site:'));
-    
-    foreach ($opts as $opt=>$value) {
-        if (in_array($opt,array('help', 'h'))) {
-?>
-      Capcitychurch.com Media Setup Assistant.
-
-      Usage:
-      <?php echo $argv[0]; ?> <option> <value>
-
-      Options:    
-      --help, -help, -h  - prints this message.
-      --site - sets the site.  Valid values are: 'DC' or 'KT'.  Default is 'DC'
-      --destination  - sets the destination path
-            to download attachments from PCO.
-      
-<?php
-        }  
-        elseif (in_array($opt,array('site', 's'))) {
-            if ($value == 'DC' || $value == 'dc' ){
-                $SITE=0; 
-                $SITE_STR = 'DC';
-            }
-            elseif ($value == 'KT' || $value == 'kt') {
-                $SITE=1;
-                $SITE_STR = 'KT';
-            }
-            else {
-?>
-      Capcitychurch.com Media Setup Assistant.
-
-      Usage:
-      <?php echo $argv[0]; ?> <option> <value>
-
-      Options:    
-      --help, -help, -h  - prints this message.
-      --site - sets the site.  Valid values are: 'DC' or 'KT'
-      --destination  - sets the destination path
-            to download attachments from PCO.
-            
-      
-<?php                
-                return;
-            }
-        }
-        elseif (in_array($opt,array('destination', 'd'))) {
-            $DOWNLOAD_DIR = $value;
-        }     
-    }
 	
 	//echo "<pre>";//view formatted debug output
 	
@@ -88,7 +39,7 @@
 	 * BEGIN: Login
 	 */
 	//$callbackUrl = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['SCRIPT_NAME']}"; //e.g. url to this page on return from auth
-        $callbackUrl = ""; //not needed for command line execution.
+        $callbackUrl = ""; 
         $r = $pco->login($callbackUrl,PlanningCenterOnline::TOKEN_CACHE_FILE);//saves access token to file
 	
 	if(!$r){
@@ -98,12 +49,15 @@
 	#Query for Organization
 	$o = $pco->organization;
         
+        
         //Find the most recent Service for site
         $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
         echo "$SITE_STR Service: {$dcservice->id}\n";          
 
-//	//get all plans by service id
+	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
+        //$n = sizeof($plans);
+        //echo "Number of Plans: {$n}\n";
         
         //Item 0 of $plans is the most recent plan...
         echo "Fetching Site's Most Recent Plan: {$plans[0]->id} - {$plans[0]->dates}\n";
