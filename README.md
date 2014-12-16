@@ -8,10 +8,9 @@ To get started open settings.php and add your keys to the fields:
 >> gedit src/com.capcitychurch/settings.php
 
 Run the program from the command line from the base directory:
->> php index.php
 
 Usage:
-      index.php <option> <value>
+      index.php [option] [value]
 
       Options:    
       --help, -help, -h  - prints this message.
