@@ -9,7 +9,7 @@ To get started open settings.php and add your keys to the file
 
 Run the program from the command line from the base directory:
 
-Usage:
+      Usage:
       php index.php [option] [value]
 
       Options:    
