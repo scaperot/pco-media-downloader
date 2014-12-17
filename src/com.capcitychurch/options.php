@@ -19,8 +19,7 @@ function getoptions ($options, $longopts)
    {
       return getopt($options, $longopts);
    }
-   //DAS - NOT TESTED WITH MY MEDIA SETUP ASSISTANT!
-   else if (isset($_REQUEST))  // web script
+/* else if (isset($_REQUEST))  // web script //DAS - NOT TESTED WITH MY MEDIA SETUP ASSISTANT!
    {
       $found = array();
 
@@ -53,7 +52,7 @@ function getoptions ($options, $longopts)
       }
 
       return $found;
-   }
+   }*/
 
    return false;
 }
