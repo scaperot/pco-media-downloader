@@ -14,8 +14,9 @@ Run the program from the command line from the base directory:
       php index.php [option] [value]
 
       --help, shows this menu
-      --site, church site: 'DC' or 'KT' (default is 'DC')
-      --destination-directory, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
+      -s, church site: 'DC' or 'KT' (default is 'DC')
+      -p, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
 
-  
+      Example:
+      php index.php -s='DC' -p='/home/user'
 
