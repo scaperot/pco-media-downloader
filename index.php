@@ -31,8 +31,6 @@
     $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
     
 	
-	//echo "<pre>";//view formatted debug output
-	
 	$pco = new PlanningCenterOnline($settings);
 	
 	/**
@@ -46,6 +44,32 @@
 		die("Login Failed");
 	}
 	
+        $options = getoptions('h::s::p::',array(''));
+        var_dump($options);
+
+ foreach (array_keys($options) as $opt) switch ($opt) {
+  case 's':
+    $SITE_STR = $options['s'];
+    if ($SITE_STR=='DC')
+        $SITE=$DC_SITE;
+    elseif ($SITE_STR=='KT')
+        $SITE=$KT_SITE;
+    else
+        echo "$SITE_STR is NOT a Site.\n";
+        exit(1);
+    break;
+
+  case 'd':
+    //TODO: check to see if you have write permissions in this directory...
+    $DOWNLOAD_DIR = $options['d'];
+
+  case 'h':
+    //TODO: print_help_message();
+    exit(1);
+}
+        
+
+
 	#Query for Organization
 	$o = $pco->organization;
         
