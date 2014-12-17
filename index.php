@@ -53,7 +53,7 @@
         //Find the most recent Service for site
         $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
         echo "$SITE_STR Service: {$dcservice->id}\n";          
-
+/*
 	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
         //$n = sizeof($plans);
@@ -105,4 +105,4 @@
                     }      
                 }
             }      
-        }
+        }*/
