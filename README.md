@@ -13,7 +13,7 @@ Run the program from the command line from the base directory:
       Usage:
       php index.php [option] [value]
 
-      --help, shows this menu
+      -h, shows this menu
       -s, church site: 'DC' or 'KT' (default is 'DC')
       -p, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
 
