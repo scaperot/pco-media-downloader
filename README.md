@@ -11,7 +11,11 @@ To get started open settings.php and add your keys to the file:
 Run the program from the command line from the base directory:
 
       Usage:
-      php index.php 
+      php index.php [option] [value]
+
+      --help, shows this menu
+      --site, church site: 'DC' or 'KT' (default is 'DC')
+      --destination-directory, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
 
   
 
