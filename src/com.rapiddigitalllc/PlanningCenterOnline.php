@@ -44,6 +44,11 @@ class PlanningCenterOnline {
             'people' => '/people.json',
             'person' => '/people/%s.json',
         ),
+        'songs'       => array(
+            'songs' => '/songs.json',
+            'song' => '/songs/%s.json',
+            'arrangements' => '/songs/%s/arrangements.json',
+        ),
     );
 
     /**
@@ -146,6 +151,29 @@ class PlanningCenterOnline {
         $url = $this->paths['baseUrl'] . $this->paths['people']['people'];
         $xml = $this->modelToXml($model, 'person');
         return $this->fetch($url, $xml, OAUTH_HTTP_METHOD_POST, 'application/xml');
+    }
+
+    /**
+     * @param null $criteria
+     * @return null
+     */
+    public function getSongs($criteria = null) {
+        $url = $this->paths['baseUrl'] . $this->paths['songs']['songs'];
+        if ($criteria) {
+            $url .= "?" . http_build_query($criteria);
+        }
+        $response = $this->fetch($url);
+        return isset($response->songs) ? $response->songs : null;
+
+    }
+
+    /**
+     * @param $personId
+     * @return mixed
+     */
+    public function getArrangementsById($songId) {
+        $url = $this->paths['baseUrl'] . sprintf($this->paths['songs']['arrangements'], $songId);
+        return $this->fetch($url);
     }
 
     /**
