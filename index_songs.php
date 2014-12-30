@@ -68,8 +68,8 @@
                 foreach($arrangements as &$arrangement) {
                     foreach($arrangement->attachments as &$attachment) {
                          echo "    Attachment: $attachment->filename.\n";
-                         $j = json_encode($attachment);
-                         echo "{$j}\n";
+                         //$j = json_encode($attachment);
+                         //echo "{$j}\n";
                     }            
                 }
                 
