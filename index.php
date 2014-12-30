@@ -44,7 +44,7 @@
 		die("Login Failed");
 	}
 	
-        //$options = getoptions('h::s::p::',array(''));
+        $options = getoptions('h::s::p::',array(''));
         //var_dump($options);
 
  foreach (array_keys($options) as $opt) switch ($opt) {
@@ -86,16 +86,16 @@
         
         
         //Find the most recent Service for site
-        $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
-        echo "$SITE_STR Service: {$dcservice->id}\n";          
+        $service = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
+        echo "$SITE_STR Service. ";          
 
 	//get all plans by service id
-	$plans = $pco->getPlansByServiceId($dcservice->id);
+	$plans = $pco->getPlansByServiceId($service->id);
         //$n = sizeof($plans);
         //echo "Number of Plans: {$n}\n";
         
         //Item 0 of $plans is the most recent plan...
-        echo "Fetching Site's Most Recent Plan: {$plans[0]->id} - {$plans[0]->dates}\n";
+        echo "Fetching Site's Most Recent Plan: {$plans[0]->dates}\n";
         $plan = $pco->getPlanById($plans[0]->id);
 
         //$j = json_encode($plan);
