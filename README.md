@@ -20,3 +20,8 @@ Run the program from the command line from the base directory:
       Example:
       php index.php -s='DC' -p='/home/user'
 
+To print out some debug information about the PCO structure of your organization:
+
+      Example:
+      php index_tree.php
+      
