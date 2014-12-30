@@ -44,28 +44,39 @@
 		die("Login Failed");
 	}
 	
-        $options = getoptions('h::s::p::',array(''));
-        var_dump($options);
+        //$options = getoptions('h::s::p::',array(''));
+        //var_dump($options);
 
  foreach (array_keys($options) as $opt) switch ($opt) {
   case 's':
-    $SITE_STR = $options['s'];
-    if ($SITE_STR=='DC')
+    $SITE_STR=$options['s'];
+    if ($SITE_STR=='DC') {
         $SITE=$DC_SITE;
-    elseif ($SITE_STR=='KT')
+    }
+    elseif ($SITE_STR=='KT') {
         $SITE=$KT_SITE;
-    else
+    }
+    else {
         echo "$SITE_STR is NOT a Site.\n";
+        print_help_message();
         exit(1);
+    }
     break;
 
-  case 'd':
-    //TODO: check to see if you have write permissions in this directory...
-    $DOWNLOAD_DIR = $options['d'];
+  case 'p':
+    $DOWNLOAD_DIR=$options['p'];
+    if (!is_writable($DOWNLOAD_DIR)) {
+        echo "Directory $DOWNLOAD_DIR is NOT writeable.  Permission Denied.\n";
+        exit(1);
+    }
+    break;
 
   case 'h':
-    //TODO: print_help_message();
+    print_help_message();
     exit(1);
+
+   
+
 }
         
 
@@ -77,7 +88,7 @@
         //Find the most recent Service for site
         $dcservice = $o->service_type_folders[$SITE]->service_types[$SERVICETYPE];
         echo "$SITE_STR Service: {$dcservice->id}\n";          
-/*
+
 	//get all plans by service id
 	$plans = $pco->getPlansByServiceId($dcservice->id);
         //$n = sizeof($plans);
@@ -129,4 +140,4 @@
                     }      
                 }
             }      
-        }*/
+        }

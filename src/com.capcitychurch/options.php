@@ -56,3 +56,13 @@ function getoptions ($options, $longopts)
 
    return false;
 }
+
+function print_help_message() {
+    echo "      Usage:
+      php index.php [option] [value]
+
+      -h, shows this menu
+      -s, church site: 'DC' or 'KT' (default is 'DC')
+      -p, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
+";
+}
