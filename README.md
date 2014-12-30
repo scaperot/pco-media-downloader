@@ -1,8 +1,16 @@
 ====================
-pco-media-downloader
+media-setup-assistant
 =====================
 
+<<<<<<< HEAD
 Media Downloader for Capital City Church DC (www.capcitychurch.com).  Using the Planning Center Online API, and some inspiration from the Planning Center Online Helper project on github (https://github.com/deboorn/PlanningCenterOnline-API-Helper), putting together a php script that will find the most recent service and then download all visual media attachments (images &amp; videos).
+=======
+<<<<<<< HEAD
+Media Setup Assistant for Capital City Church DC (www.capcitychurch.com).  Using the Planning Center Online API, and some inspiration from the Planning Center Online Helper project on github (https://github.com/deboorn/PlanningCenterOnline-API-Helper), putting together a php script that will find the most recent service and then download all media attachments (images &amp; videos).
+=======
+Media Downloader for Capital City Church DC (www.capcitychurch.com).  Using the Planning Center Online API, and some inspiration from the Planning Center Online Helper project on github (https://github.com/deboorn/PlanningCenterOnline-API-Helper), putting together a php script that will find the most recent service and then download all visual media attachments (images &amp; videos).
+>>>>>>> 623f3f94931278981987f28238d40f44da8327f3
+>>>>>>> temp
 
 To get started open settings.php and add your keys to the file:
 
@@ -20,8 +28,3 @@ Run the program from the command line from the base directory:
       Example:
       php index.php -s='DC' -p='/home/user'
 
-To print out some debug information about the PCO structure of your organization:
-
-      Example:
-      php index_tree.php
-      
