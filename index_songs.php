@@ -2,7 +2,7 @@
 
 
 	/*
-	 * Media Setup Assistant 
+	 * Media Downloader
 	 * @license ?
 	 * @copyright 2014 ?
 	 * @author David S. scaperot@vt.edu 
