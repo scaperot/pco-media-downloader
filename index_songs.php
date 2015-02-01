@@ -20,7 +20,7 @@
 
     
     	$DOWNLOAD_DIR = '/var/tmp'; //default
-    $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
+        $BLACK_SLIDE  = 'https://planningcenteronline.com/attachments/23267938';
     
 	
 	$pco = new PlanningCenterOnline($settings);
@@ -56,24 +56,53 @@
    
 
 }
-        
+        //download first attachment with mp3 content_type in each song
+        //
         $songs = $pco->getSongs();
         $n = sizeof($songs);
         echo "Total Number of Songs: {$n}\n";
         $s = 0;
         foreach($songs as &$song) {
-           if ($s==2) {
-                echo "Printing the first songs information\n";
 		$arrangements = $pco->getArrangementsById($song->id);
+                echo "Song: $song->title\n";
+                $first_arrangement_downloaded=false;
                 foreach($arrangements as &$arrangement) {
                     foreach($arrangement->attachments as &$attachment) {
-                         echo "    Attachment: $attachment->filename.\n";
+                         //echo "    Attachment: Name: $attachment->filename, Content: $attachment->content_type, Upload Date: \n";
                          //$j = json_encode($attachment);
                          //echo "{$j}\n";
-                    }            
+                         if (strpos($attachment->content_type,"audio/mpeg") !== FALSE) {
+		                //write to file...
+                        	echo "      Saving: $DOWNLOAD_DIR/$attachment->filename ($attachment->content_type)\n";
+		                //Other things I should check for: 
+		                //$attachment->downloadable = true, 
+		                $new_file_name = "$DOWNLOAD_DIR/$attachment->filename";
+		                $url = $attachment->url;
+		                //echo "      Saving from URL: $url\n";                        
+		                $r = $pco->getAttachment($url,NULL,OAUTH_HTTP_METHOD_GET,$attachment->content_type);
+		                //download to $download_dir
+		                try {
+		                    copy($r['redirect_url'],$new_file_name);
+                                    $first_arrangement_downloaded=true;
+		                }
+		                catch (Exception $e) {
+		                    echo "Failed to Download: {$attachment->filename}, {$e->getMessage}\n";
+		                    return; 
+		                }   		                
+                         }
+                         
+                         if ($first_arrangement_downloaded==true) {
+                             break; //
+                         }
+
+
+                    }      
+                    if ($first_arrangement_downloaded==true) {
+                        break; //
+                    }      
                 }
                 
-            }   
+            
             $s = $s+1;
         }
         //$j = json_encode($songs);
