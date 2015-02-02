@@ -39,23 +39,25 @@
         $options = getoptions('h::p::',array(''));
         //var_dump($options);
 
- foreach (array_keys($options) as $opt) switch ($opt) {
+        foreach (array_keys($options) as $opt) switch ($opt) {
 
-  case 'p':
-    $DOWNLOAD_DIR=$options['p'];
-    if (!is_writable($DOWNLOAD_DIR)) {
-        echo "Directory $DOWNLOAD_DIR is NOT writeable.  Permission Denied.\n";
-        exit(1);
-    }
-    break;
+            case 'p':
+    		$DOWNLOAD_DIR=$options['p'];
+    		if (!is_writable($DOWNLOAD_DIR)) {
+        		echo "Directory $DOWNLOAD_DIR is NOT writeable.  Permission Denied.\n";
+        		exit(1);
+    		}
+    		break;
 
-  case 'h':
-    print_help_message();
-    exit(1);
+	    //case 'a':
+        //	download_all_songs();
+       	//	exit(1);
 
-   
+	    case 'h':
+		print_song_help_message();
+		exit(1);
+	}
 
-}
         //download first attachment with mp3 content_type in each song
         //
         $songs = $pco->getSongs();
