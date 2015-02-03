@@ -17,6 +17,7 @@
 	require('src/com.rapiddigitalllc/PlanningCenterOnline.php');
 	require('src/com.capcitychurch/settings.php');
         require('src/com.capcitychurch/options.php');
+        require('src/com.capcitychurch/PlanningCenterOnlineUtilities.php');
 
     
     	$DOWNLOAD_DIR = '/var/tmp'; //default
@@ -24,6 +25,7 @@
     
 	
 	$pco = new PlanningCenterOnline($settings);
+        $pcoutils = new PlanningCenterOnlineUtilities($pco);
 	
 	/**
 	 * BEGIN: Login
@@ -58,8 +60,9 @@
 		exit(1);
 	}
 
-        //download first attachment with mp3 content_type in each song
-        //
+        $pcoutils->setDownloadDir($DOWNLOAD_DIR);
+
+        //download mp3 content_type in each song/arrangement
         $songs = $pco->getSongs();
         $n = sizeof($songs);
         echo "Total Number of Songs: {$n}\n";
@@ -67,41 +70,9 @@
         foreach($songs as &$song) {
 		$arrangements = $pco->getArrangementsById($song->id);
                 echo "Song: $song->title\n";
-                $first_arrangement_downloaded=false;
+
                 foreach($arrangements as &$arrangement) {
-                    foreach($arrangement->attachments as &$attachment) {
-                         //echo "    Attachment: Name: $attachment->filename, Content: $attachment->content_type, Upload Date: \n";
-                         //$j = json_encode($attachment);
-                         //echo "{$j}\n";
-                         if (strpos($attachment->content_type,"audio/mpeg") !== FALSE) {
-		                //write to file...
-                        	echo "      Saving: $DOWNLOAD_DIR/$attachment->filename ($attachment->content_type)\n";
-		                //Other things I should check for: 
-		                //$attachment->downloadable = true, 
-		                $new_file_name = "$DOWNLOAD_DIR/$attachment->filename";
-		                $url = $attachment->url;
-		                //echo "      Saving from URL: $url\n";                        
-		                $r = $pco->getAttachment($url,NULL,OAUTH_HTTP_METHOD_GET,$attachment->content_type);
-		                //download to $download_dir
-		                try {
-		                    copy($r['redirect_url'],$new_file_name);
-                                    $first_arrangement_downloaded=true;
-		                }
-		                catch (Exception $e) {
-		                    echo "Failed to Download: {$attachment->filename}, {$e->getMessage}\n";
-		                    return; 
-		                }   		                
-                         }
-                         
-                         if ($first_arrangement_downloaded==true) {
-                             break; //
-                         }
-
-
-                    }      
-                    if ($first_arrangement_downloaded==true) {
-                        break; //
-                    }      
+                        $pcoutils->downloadArrangementByContentType($arrangement,'audio/mpeg');
                 }
                 
             
