@@ -44,6 +44,10 @@ class PlanningCenterOnline {
             'people' => '/people.json',
             'person' => '/people/%s.json',
         ),
+        'medias'       => array(
+            'medias' => '/medias.json',
+            'media' => '/medias/%s.json',
+        ),
         'songs'       => array(
             'songs' => '/songs.json',
             'song' => '/songs/%s.json',
@@ -125,6 +129,32 @@ class PlanningCenterOnline {
     }
 
     /**
+     * @param null $criteria
+     * @return null
+     */
+    public function getMedias($criteria = null) {
+        $url = $this->paths['baseUrl'] . $this->paths['medias']['medias'];
+        if ($criteria) {
+            $url .= "?" . http_build_query($criteria);
+        }
+        $response = $this->fetch($url);
+        return isset($response->medias) ? $response->medias : null;
+
+    }
+
+
+    /**
+     * @param null $criteria
+     * @return null
+     */
+    public function getMediaById($mediaId) {
+        $url = $this->paths['baseUrl'] . sprintf($this->paths['medias']['media'],$mediaId);
+        echo "{$url}\n\n\n";
+        return $this->fetch($url);
+    }
+
+
+    /**
      * @param $personId
      * @return mixed
      */
@@ -165,6 +195,12 @@ class PlanningCenterOnline {
         $response = $this->fetch($url);
         return isset($response->songs) ? $response->songs : null;
 
+    }
+
+    public function createSong($model){
+        $url = $this->paths['baseUrl'] . $this->paths['songs']['songs'];
+        $xml = $this->modelToXml($model,'song');
+        return $this->fetch($url,$xml,OAUTH_HTTP_METHOD_POST,'application/xml');
     }
 
     /**
@@ -228,6 +264,12 @@ class PlanningCenterOnline {
 
     public function setAccessToken($token) {
         $this->accessToken = (object)$token;
+    }
+
+    public function getPlanItemById($planitem) {    
+        //GET plan_item object
+        $url = $this->paths['baseUrl'] . "/plan_items/{$planitem}.json";
+        return $o = $this->fetch($url);
     }
 
     /**
