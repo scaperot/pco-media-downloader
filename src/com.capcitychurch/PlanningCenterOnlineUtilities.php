@@ -13,7 +13,7 @@ class PlanningCenterOnlineUtilities {
     /**
      * @var object
      */
-    private $download_dir;
+    private $download_dir="/var/tmp";
 
     /**
      * @var object
@@ -40,8 +40,8 @@ class PlanningCenterOnlineUtilities {
         return $this->download_dir;
     }
 
-    public function downloadArrangementByContentType($arrangement,$type='audio/mpeg') {
-            foreach($arrangement->attachments as &$attachment) {
+    private function downloadAttachmentByContentType($attachment,$type='audio/mpeg') {
+
                  //echo "    Attachment: Name: $attachment->filename, Content: $attachment->content_type, Upload Date: \n";
                  //$j = json_encode($attachment);
                  //echo "{$j}\n";
@@ -64,25 +64,61 @@ class PlanningCenterOnlineUtilities {
 	                }   		                
                  }
                  
-            }      
+
 
         }
- 
+
+    public function downloadAllSongs() {
+        //download mp3 content_type in each song/arrangement
+        $songs = $this->pco->getSongs();
+        $n = sizeof($songs);
+        echo "    Total Number of Songs: {$n}\n";
+        $s = 0;
+        foreach($songs as &$song) {
+		$arrangements = $this->pco->getArrangementsById($song->id);
+                echo "    Song: $song->title\n";
+
+                foreach($arrangements as &$arrangement) {
+                    foreach($arrangement->attachments as &$attachment) {
+                        $this->downloadAttachmentByContentType($attachment,'audio/mpeg');
+                    }
+                }
+                
+            
+            $s = $s+1;
+        }
     }
 
 
-/*
- * mode_flag: three possible ways to download [all,first arrangement,earliest date]
- *
- 
-function downloadSongs($songs,'all') {
+    public function downloadAllMedia() {
+        //Iterate through all the media  and get image attachments...
+        $save_attachments = null;
+        $n = 0;
+        $medias = $this->pco->getMedias();
+        foreach($medias as $media){
+                //iterate through all attachments to find the media files...for now just images.
+                $len = count($media->attachments);
+
+		//echo "      Saving: at least $len attachments.\n";
+		foreach($media->attachments as $attachment){
+		    $this->downloadAttachmentByContentType($attachment,"image");
+                 }
+           }
+
+    }
+
+    public function downloadMediaByPlan($plan) {
+        //Iterate through all the items in plan and get image attachments...
+        $n = 0;
+        foreach($plan->items as $item){
+                //iterate through all attachments to find the media files...for now just images.
+                $len = count($item->attachments);
+                //echo "      Saving: at least $len attachments.\n";
+                foreach($item->attachments as $attachment){
+                    //may add other types someday...
+                    $this->downloadAttachmentByContentType($attachment,"image");     
+                }     
+        }
+    }
 
 }
-
-function getSongAge($song){
-    
-}
-
-function getAttachments($obj) {
-}
-*/

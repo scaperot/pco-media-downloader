@@ -64,21 +64,6 @@ function print_help_message() {
       -h, shows this menu
       -s, church site: 'DC' or 'KT' (default is 'DC')
       -p, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
-";
-}
-
-function print_song_help_message() {
-    echo "      Usage:
-      php index_songs.php [option] [value]
-
-      summary: by default index_songs will download one song from the list of songs
-      and save them to file.  
-
-      -h, shows this menu
-      -a, download all songs that are uploaded
-      -i, interactive mode for downloading songs manually (not working)
-      -d, attempt to download the most recently uploaded songs from the last X days (default is the last 24 hours) (not working)
-      -s, church site: 'DC' or 'KT' (default is 'DC')
-      -p, absolute path where media is downloaded (if nothing is given, then /var/tmp used)
+      -t, type of download: all media in org (=media), all songs in org (=song), by default all media in most recent plan.
 ";
 }
